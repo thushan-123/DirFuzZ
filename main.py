@@ -4,7 +4,7 @@ import queue
 
 arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
 arguments.add_argument("--word-list", help="Path Word List text file", required=True)
-arguments.add_argument("--status-codes", type=str, help="Status codes")
+arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
 
 args = arguments.parse_args()
 
@@ -25,7 +25,13 @@ def fuzz():
     pass
 
 def main():
-    print("Hello from pythonfuzz!")
+    print("\nHello from pythonfuzz!")
+    print("___________________________")
+    print("")
+    
+    print(f"WORD LIST     : {args.word_list}")
+    print(f"STATUS CODES  : {args.status_codes}")
+    print("___________________________")
 
 
 if __name__ == "__main__":
