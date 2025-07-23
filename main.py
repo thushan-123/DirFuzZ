@@ -3,10 +3,21 @@ import argparse
 import queue
 
 arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
-arguments.add_argument("--word-list", help="Provide a WORD List text file")
-arguments.add_argument("--status-codes", type=list, help="Status codes")
+arguments.add_argument("--word-list", help="Path Word List text file", required=True)
+arguments.add_argument("--status-codes", type=str, help="Status codes")
 
 args = arguments.parse_args()
+
+Q = queue.Queue()
+
+try:
+    with open(args.word_list, 'r') as f:
+        data = f.read()
+        word_l = data.split("\n")
+        for x in word_l:
+            Q.put(x)      
+except :
+    raise Exception()
 
 
 
