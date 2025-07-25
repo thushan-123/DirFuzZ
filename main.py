@@ -36,6 +36,8 @@ def main():
     print("___________________________")
     
     print("")
+    print(Q.get())
+    print(Q.get())
     
 
 
