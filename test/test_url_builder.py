@@ -16,5 +16,13 @@ def test_add_dir():
     assert builder.add_dir("voldemort") == "http://orange.com/voldemort"
     
     
-    
+""" 
+    TEST CASE 2:
+        url : http://orange.com/
+        dir name : voldemort
+        expected result : http://orange.com/voldemort
+"""
+def test_url_slash():
+    builder = UrlBuilder("http://orange.com/")
+    assert UrlBuilder.add_dir("voldemort") == "http://orange.com/voldemort"
 
