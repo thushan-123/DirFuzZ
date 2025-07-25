@@ -10,7 +10,13 @@ class UrlBuilder:
     
     def add_more_dir(self, *dir_names):
         base_url: str = self.url
-        base_path: str = "/"
+        base_path: str = ""
+        
         for k in dir_names:
+            base_path += f"/{k}"
+        
+        if base_url[-1] == "/":
+            del base_url[-1]
             
+        return base_url + base_path
     
