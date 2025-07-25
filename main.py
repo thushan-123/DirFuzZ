@@ -13,8 +13,10 @@ Q = queue.Queue()
 try:
     with open(args.word_list, 'r') as f:
         data = f.read()
+        print(data.encode())
         word_l = data.split("\n")
         for x in word_l:
+            print(x)
             Q.put(x)      
 except :
     raise Exception()
@@ -32,6 +34,9 @@ def main():
     print(f"WORD LIST     : {args.word_list}")
     print(f"STATUS CODES  : {args.status_codes}")
     print("___________________________")
+    
+    print("")
+    
 
 
 if __name__ == "__main__":
