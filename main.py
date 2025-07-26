@@ -16,15 +16,17 @@ try:
         print(data.encode())
         word_l = data.split("\n")
         for x in word_l:
-            print(x)
             Q.put(x)      
-except :
-    raise Exception()
+except FileNotFoundError:
+    print(f"File is Not Found : {args.word_list}")
+    exit(1)
 
 
 
 def fuzz():
-    pass
+    while not Q.empty():
+        word: str = Q.get()
+        print(word)
 
 def main():
     print("\nHello from pythonfuzz!")
@@ -36,10 +38,10 @@ def main():
     print("___________________________")
     
     print("")
-    print(Q.get())
-    print(Q.get())
+    fuzz()
     
 
 
 if __name__ == "__main__":
     main()
+    
