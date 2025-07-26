@@ -1,9 +1,4 @@
-from ..url_builder import UrlBuilder
-
-
-# def test_add_dir():
-#     builder = UrlBuilder("http://example.com")
-#     assert builder.add_dir("test") == "http://example.com/test"
+from url_builder import UrlBuilder
 
 """ 
     TEST CASE 1:
@@ -24,5 +19,15 @@ def test_add_dir():
 """
 def test_url_slash():
     builder = UrlBuilder("http://orange.com/")
-    assert UrlBuilder.add_dir("voldemort") == "http://orange.com/voldemort"
+    assert builder.add_dir("voldemort") == "http://orange.com/voldemort"
+    
+"""
+    TEST CASE 3:
+        url : http://orange.com/
+        dir names : voldemort,snep,magonigal
+        expected result : http://orange.com/voldemort/snep/magonigal
+"""
+def test_url_many_dir():
+    builder = UrlBuilder("http://orange.com/")
+    assert builder.add_more_dir("voldemort","snep","magonigal") == "http://orange.com/voldemort/snep/magonigal"
 
