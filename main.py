@@ -18,6 +18,10 @@ Q = queue.Queue()
 # nargs='+' indicates one or more arguments 
 # nargs='*' indicates zero or more arguments 
 
+code = args.status_codes
+
+status_code_arr = code.split(",")
+
 
 try:
     with open(args.word_list, 'r') as f:
@@ -51,7 +55,7 @@ def main():
     print("___________________________")
     
     print("")
-    fuzz()
+    #fuzz()
     
 
 
