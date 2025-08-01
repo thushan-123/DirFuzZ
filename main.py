@@ -32,7 +32,8 @@ def fuzz():
     url_builder = UrlBuilder(args.url)
     while not Q.empty():
         word: str = Q.get()
-        print(url_builder.add_dir(word))
+        url_ = url_builder.add_dir(word)
+        r = requests.get(url_)
         
         
 
