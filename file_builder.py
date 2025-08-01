@@ -1,6 +1,6 @@
 from url_builder import UrlBuilder
 
-class fileUrlBuilder(UrlBuilder):
+class FileUrlBuilder(UrlBuilder):
     def __init__(self,url: str, file_w_list: str, extension: str):
         super().__init__(url)
         self.file_w_list = file_w_list
@@ -11,8 +11,8 @@ class fileUrlBuilder(UrlBuilder):
         u = u +"/"+ file_name + str(self.extension)
         return u
     
-if __name__ == "__main__":
-    furl = fileUrlBuilder("http://fb.com","hello",".html")
-    print(furl.fileUrlPathBuilder("index"))
+# if __name__ == "__main__":
+#     furl = fileUrlBuilder("http://fb.com","hello",".html")
+#     print(furl.fileUrlPathBuilder("index"))
         
     

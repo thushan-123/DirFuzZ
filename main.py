@@ -2,17 +2,21 @@ import requests
 import argparse
 import queue
 from url_builder import UrlBuilder
+from file_builder import FileUrlBuilder
 
 
 arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
 arguments.add_argument("--word-list", help="Path Word List text file", required=True)
 arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
+arguments.add_argument("-e", nargs='+', type=str , help="file extensions")
 arguments.add_argument("--url", type=str, help="Target URL", required=True)
 
 args = arguments.parse_args()
 
 Q = queue.Queue()
 
+# nargs='+' indicates one or more arguments 
+# nargs='*' indicates zero or more arguments 
 
 
 try:
