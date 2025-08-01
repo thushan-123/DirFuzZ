@@ -3,12 +3,13 @@ import argparse
 import queue
 from url_builder import UrlBuilder
 from file_builder import FileUrlBuilder
-
+from requests.exceptions import RequestException
+from urllib.parse import urlparse
 
 arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
 arguments.add_argument("--word-list", help="Path Word List text file", required=True)
 arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
-arguments.add_argument("-e", nargs='+', type=str , help="file extensions")
+arguments.add_argument("-e", type=str , help="file extensions")
 arguments.add_argument("--url", type=str, help="Target URL", required=True)
 
 args = arguments.parse_args()
@@ -19,7 +20,7 @@ Q = queue.Queue()
 # nargs='*' indicates zero or more arguments 
 
 code = args.status_codes
-
+#extensions_arr = (args.e).split(",")
 status_code_arr = code.split(",")
 
 
@@ -41,7 +42,19 @@ def fuzz():
     while not Q.empty():
         word: str = Q.get()
         url_ = url_builder.add_dir(word)
-        r = requests.get(url_)
+        # print(urlparse(url_))
+        try:
+            r = requests.get(url=url_)
+            
+            if r.status_code == 200:
+                print(f"{url_}  status:{r.status_code}")
+        except RequestException as e:
+            print(e)
+            break
+
+    
+            
+            
         
         
 
@@ -55,7 +68,7 @@ def main():
     print("___________________________")
     
     print("")
-    #fuzz()
+    fuzz()
     
 
 
