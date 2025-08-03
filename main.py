@@ -57,7 +57,7 @@ def fuzz():
             if r.status_code in status_codes:
                 print(f"{url_}  status:{r.status_code}")
                 if args.r is not None:
-                    recursive_queue.put(word)
+                    recursive_queue1.put(word)
         except RequestException as e:
             print(e)
             break
