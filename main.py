@@ -12,7 +12,7 @@ arguments.add_argument("--word-list", help="Path Word List text file", required=
 arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
 arguments.add_argument("-e", type=str , help="file extensions")
 arguments.add_argument("-fname" , help="file nale lis not provided default list is word list")
-arguments.add_argument("-r" , help="recursive fuzz <number>")
+arguments.add_argument("-r" , help="recursive fuzz <number> 0-5")
 arguments.add_argument("--url", type=str, help="Target URL", required=True)
 
 args = arguments.parse_args()
@@ -62,8 +62,16 @@ def fuzz():
             break
 
 def file_fuzz():
+    file_n = None
+    if args.fname is None:
+        file_n = args.word_list
+    else:
+        file_n = args.fname
     for x in file_extenctions:
         file_bulder = FileUrlBuilder(args.url,args.word_list,x)
+        y =file_bulder.fileUrlPathBuilder(x)
+        print(y)
+        
 def recursive_fuzz():
     if args.r < 6:
         pass
@@ -85,7 +93,8 @@ def main():
     print("___________________________")
     
     print("")
-    fuzz()
+    #fuzz()
+    file_fuzz()
     
 
 
