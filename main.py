@@ -11,6 +11,7 @@ arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
 arguments.add_argument("--word-list", help="Path Word List text file", required=True)
 arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
 arguments.add_argument("-e", type=str , help="file extensions")
+arguments.add_argument("-fname" , help="file nale lis not provided default list is word list")
 arguments.add_argument("-r" , help="recursive fuzz <number>")
 arguments.add_argument("--url", type=str, help="Target URL", required=True)
 
@@ -26,6 +27,8 @@ code = args.status_codes
 status_code_str_arr:list = code.split(",")
 status_codes = [int(x) for x in status_code_str_arr]
 
+file_extenctions_str = args.e 
+file_extenctions = file_extenctions_str.split(",")
 
 
 try:
@@ -58,6 +61,14 @@ def fuzz():
             print(e)
             break
 
+def file_fuzz():
+    for x in file_extenctions:
+        file_bulder = FileUrlBuilder(args.url,args.word_list,x)
+def recursive_fuzz():
+    if args.r < 6:
+        pass
+    else:
+        print("value is out of scope")
     
             
             
