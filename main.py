@@ -97,7 +97,7 @@ async def file_fuzz(session: aiohttp.ClientSession):
     await asyncio.gather(*tasks)
 
 async def main():
-    print("\nHello from pythonfuzz!")
+    print("\nDirFuzZ\n.  devloped by thush\n")
     print("___________________________")
     print(f"WORD LIST     : {args.word_list}")
     print(f"STATUS CODES  : {args.status_codes}")
