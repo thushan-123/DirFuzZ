@@ -116,7 +116,6 @@ async def main():
         if file_extenctions:
             await file_fuzz(session)
 
-
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
     
