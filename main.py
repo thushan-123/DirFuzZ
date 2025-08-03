@@ -10,12 +10,12 @@ from requests.exceptions import RequestException
 from urllib.parse import urlparse
 
 arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
-arguments.add_argument("--word-list", help="Path Word List text file", required=True)
-arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
-arguments.add_argument("-e", type=str , help="file extensions")
-arguments.add_argument("-fname" , help="file nale lis not provided default list is word list")
-arguments.add_argument("-r" , help="recursive fuzz <number> 0-5")
-arguments.add_argument("--url", type=str, help="Target URL", required=True)
+arguments.add_argument("--word-list", required=True, help="Path Word List text file")
+arguments.add_argument("--status-codes", type=str, default="200,301,302,403", help="Status codes")
+arguments.add_argument("-e", type=str, help="File extensions (comma-separated)")
+arguments.add_argument("-fname", help="Filename list (default is word list)")
+arguments.add_argument("-r", type=int, help="Recursive fuzz (0–5)")
+arguments.add_argument("--url", required=True, help="Target URL")
 
 args = arguments.parse_args()
 
@@ -29,8 +29,7 @@ code = args.status_codes
 status_code_str_arr:list = code.split(",")
 status_codes = [int(x) for x in status_code_str_arr]
 
-file_extenctions_str = args.e 
-file_extenctions = file_extenctions_str.split(",")
+file_extenctions = args.e.split(",") if args.e else []
 
 
 try:
@@ -85,42 +84,37 @@ async def fuzz(session: aiohttp.ClientSession, base_url: str, words: List[str], 
 
     await asyncio.gather(*tasks)
 
-def file_fuzz():
-    global file_queue
-    file_n = None
-    if args.fname is None:
-        file_queue = Q
-    else:
-        with open(args.fname, 'r') as l:
-            n = l.read()
-            k = n.split("\n")
-            
-            for x in k:
-                file_queue.put(x)
+async def file_fuzz(session: aiohttp.ClientSession):
+    tasks = []
 
     while not file_queue.empty():
         name = file_queue.get()
-        for x in file_extenctions:
-            file_bulder = FileUrlBuilder(args.url,x)
-            y =file_bulder.fileUrlPathBuilder(name)
-            r = requests.get(url=y)
-            if r.status_code in status_codes:
-                print(y)    
-        
+        for ext in file_extenctions:
+            file_builder = FileUrlBuilder(args.url, ext)
+            url = file_builder.fileUrlPathBuilder(name)
+            tasks.append(asyncio.create_task(check_url(session, url)))
 
-def main():
+    await asyncio.gather(*tasks)
+
+async def main():
     print("\nHello from pythonfuzz!")
     print("___________________________")
-    print("")
-    
     print(f"WORD LIST     : {args.word_list}")
     print(f"STATUS CODES  : {args.status_codes}")
-    print("___________________________")
-    
-    print("")
-    fuzz()
-    file_fuzz()
-    
+    print(f"EXTENSIONS    : {file_extenctions}")
+    print(f"RECURSIVE     : {args.r or 0}")
+    print("___________________________\n")
+
+    base_url = args.url
+    words = []
+
+    with open(args.word_list, 'r') as f:
+        words = f.read().splitlines()
+
+    async with aiohttp.ClientSession() as session:
+        await fuzz(session, base_url, words, depth=0, max_depth=int(args.r or 0))
+        if file_extenctions:
+            await file_fuzz(session)
 
 
 if __name__ == "__main__":
