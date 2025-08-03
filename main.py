@@ -21,6 +21,7 @@ args = arguments.parse_args()
 
 Q = queue.Queue()
 file_queue = queue.Queue()
+visited_urls = set()
 # nargs='+' indicates one or more arguments 
 # nargs='*' indicates zero or more arguments 
 
@@ -62,12 +63,18 @@ async def check_url(session: aiohttp.ClientSession, url: str):
     return False
 
 async def check_and_recurse(session: aiohttp.ClientSession, url: str, word: str, depth: int, max_depth: int):
+    if url in visited_urls:
+        return
+
+    visited_urls.add(url)
+
     is_valid = await check_url(session, url)
     if is_valid and depth < max_depth:
         # Recursive fuzzing
         with open(args.word_list, 'r') as f:
             sub_words = f.read().splitlines()
-            await fuzz(session, url + "/", sub_words, depth + 1, max_depth)
+            await fuzz(session, url if url.endswith("/") else url + "/", sub_words, depth + 1, max_depth)
+
 
 
 async def fuzz(session: aiohttp.ClientSession, base_url: str, words: List[str], depth: int = 0, max_depth: int = 0):
