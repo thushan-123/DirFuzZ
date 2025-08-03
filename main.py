@@ -1,3 +1,4 @@
+import asyncio
 from typing import List
 import aiohttp
 import requests
@@ -61,23 +62,28 @@ async def check_url(session: aiohttp.ClientSession, url: str):
         print(f"Error: {url} -> {e}")
     return False
 
+async def check_and_recurse(session: aiohttp.ClientSession, url: str, word: str, depth: int, max_depth: int):
+    is_valid = await check_url(session, url)
+    if is_valid and depth < max_depth:
+        # Recursive fuzzing
+        with open(args.word_list, 'r') as f:
+            sub_words = f.read().splitlines()
+            await fuzz(session, url + "/", sub_words, depth + 1, max_depth)
 
-def fuzz():
-    url_builder = UrlBuilder(args.url)
-    while not Q.empty():
-        word: str = Q.get()
-        url_ = url_builder.add_dir(word)
-        # print(urlparse(url_))
-        try:
-            r = requests.get(url=url_)
-            
-            if r.status_code in status_codes:
-                print(f"{url_}  status:{r.status_code}")
-                if args.r is not None:
-                    recursive_queue1.put(word)
-        except RequestException as e:
-            print(e)
-            break
+
+async def fuzz(session: aiohttp.ClientSession, base_url: str, words: List[str], depth: int = 0, max_depth: int = 0):
+    if depth > max_depth:
+        return
+
+    url_builder = UrlBuilder(base_url)
+    tasks = []
+
+    for word in words:
+        url = url_builder.add_dir(word)
+        task = asyncio.create_task(check_and_recurse(session, url, word, depth, max_depth))
+        tasks.append(task)
+
+    await asyncio.gather(*tasks)
 
 def file_fuzz():
     global file_queue
