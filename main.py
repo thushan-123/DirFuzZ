@@ -35,7 +35,7 @@ file_extenctions = args.e.split(",") if args.e else []
 try:
     with open(args.word_list, 'r') as f:
         data = f.read()
-        print(data.encode())
+       # print(data.encode())
         word_l = data.split("\n")
         for x in word_l:
             Q.put(x)      
