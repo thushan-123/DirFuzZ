@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        python-latest: [3.10,3.11]
+    
+    steps:
+    - name:  Checkout code
+      uses: actions/setup-python@v4
+    - name: stup python
+      uses: actions/setup-python@v5
+      with: 
+        python-version: ${{matrix.python-latest}}
+
+    - name: Install uv
+      run: |
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+    - name: install dependencies
+      run: |
+        uv pip install .
+
+    - name: run test cases
+      run: |
+        uv pip install pytest
+        pytest

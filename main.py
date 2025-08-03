@@ -95,7 +95,7 @@ def main():
     print("___________________________")
     
     print("")
-    #fuzz()
+    fuzz()
     file_fuzz()
     
 
