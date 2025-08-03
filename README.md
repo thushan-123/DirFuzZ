@@ -1,7 +1,8 @@
 # DirFuzZ
-```
+<label>
 Developed by thush
-```
+</label>
+
 # 🔍 Python Async Directory & File Fuzzer
 
 A fast and recursive directory + file fuzzing tool for web applications, written in Python using `aiohttp` and `asyncio`.
