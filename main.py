@@ -10,12 +10,13 @@ arguments = argparse.ArgumentParser(description="Dictories FuZZ tool")
 arguments.add_argument("--word-list", help="Path Word List text file", required=True)
 arguments.add_argument("--status-codes", type=str, help="Status codes", default="200,301,302,403")
 arguments.add_argument("-e", type=str , help="file extensions")
+arguments.add_argument("-r" , help="recursive fuzz <number>")
 arguments.add_argument("--url", type=str, help="Target URL", required=True)
 
 args = arguments.parse_args()
 
 Q = queue.Queue()
-
+recursive_queue = queue.Queue()
 # nargs='+' indicates one or more arguments 
 # nargs='*' indicates zero or more arguments 
 
