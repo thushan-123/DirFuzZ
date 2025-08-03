@@ -18,7 +18,7 @@ arguments.add_argument("--url", type=str, help="Target URL", required=True)
 args = arguments.parse_args()
 
 Q = queue.Queue()
-recursive_queue = queue.Queue()
+recursive_queue1 = queue.Queue()
 file_queue = queue.Queue()
 # nargs='+' indicates one or more arguments 
 # nargs='*' indicates zero or more arguments 
@@ -82,17 +82,7 @@ def file_fuzz():
             y =file_bulder.fileUrlPathBuilder(name)
             r = requests.get(url=y)
             if r.status_code in status_codes:
-                print(y)
-        
-def recursive_fuzz():
-    if args.r < 6:
-        pass
-    else:
-        print("value is out of scope")
-    
-            
-            
-        
+                print(y)    
         
 
 def main():
