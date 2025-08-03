@@ -1,3 +1,4 @@
+from typing import List
 import requests
 import argparse
 import queue
@@ -22,7 +23,9 @@ recursive_queue = queue.Queue()
 
 code = args.status_codes
 #extensions_arr = (args.e).split(",")
-status_code_arr = code.split(",")
+status_code_str_arr:list = code.split(",")
+status_codes = [int(x) for x in status_code_str_arr]
+
 
 
 try:
@@ -47,7 +50,7 @@ def fuzz():
         try:
             r = requests.get(url=url_)
             
-            if r.status_code == 200:
+            if r.status_code in status_codes:
                 print(f"{url_}  status:{r.status_code}")
         except RequestException as e:
             print(e)
@@ -69,7 +72,8 @@ def main():
     print("___________________________")
     
     print("")
-    fuzz()
+    #fuzz()
+    print(status_codes)
     
 
 
