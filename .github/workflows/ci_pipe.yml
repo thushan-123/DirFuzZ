@@ -10,26 +10,27 @@ jobs:
 
     strategy:
       matrix:
-        python-latest: [3.10,3.11]
-    
+        python-version: [3.10, 3.11]
+
     steps:
-    - name:  Checkout code
-      uses: actions/setup-python@v4
-    - name: stup python
-      uses: actions/setup-python@v5
-      with: 
-        python-version: ${{matrix.python-latest}}
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Install uv
-      run: |
-        curl -LsSf https://astral.sh/uv/install.sh | sh
-        echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
 
-    - name: install dependencies
-      run: |
-        uv pip install .
+      - name: Install uv
+        run: |
+          curl -LsSf https://astral.sh/uv/install.sh | sh
+          echo "$HOME/.cargo/bin" >> $GITHUB_PATH
 
-    - name: run test cases
-      run: |
-        uv pip install pytest
-        pytest
+      - name: Install dependencies
+        run: |
+          uv pip install .
+
+      - name: Run test cases
+        run: |
+          uv pip install pytest
+          pytest
