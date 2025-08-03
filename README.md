@@ -21,12 +21,12 @@ A fast and recursive directory + file fuzzing tool for web applications, written
 ```bash
 git clone https://github.com/yourusername/python-fuzzer.git
 cd python-fuzzer
-uv venc
+uv venv
 uv sync
 ```
 
 
-python fuzz.py --url http://localhost:8000/ \
+python fuzz.py --url http://example.com/ \
   --word-list wordlist.txt \
   --status-codes 200,301,403 \
   -e php,html,txt \
