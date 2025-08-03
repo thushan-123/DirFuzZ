@@ -1,4 +1,5 @@
 from typing import List
+import aiohttp
 import requests
 import argparse
 import queue
@@ -18,7 +19,6 @@ arguments.add_argument("--url", type=str, help="Target URL", required=True)
 args = arguments.parse_args()
 
 Q = queue.Queue()
-recursive_queue1 = queue.Queue()
 file_queue = queue.Queue()
 # nargs='+' indicates one or more arguments 
 # nargs='*' indicates zero or more arguments 
@@ -42,7 +42,24 @@ try:
 except FileNotFoundError:
     print(f"File is Not Found : {args.word_list}")
     exit(1)
+    
+    
+if args.fname:
+    with open(args.fname, 'r') as f:
+        for fname in f.read().splitlines():
+            file_queue.put(fname)
+else:
+    file_queue = Q
 
+async def check_url(session: aiohttp.ClientSession, url: str):
+    try:
+        async with session.get(url) as response:
+            if response.status in status_codes:
+                print(f"{url}  status:{response.status}")
+                return True
+    except Exception as e:
+        print(f"Error: {url} -> {e}")
+    return False
 
 
 def fuzz():
