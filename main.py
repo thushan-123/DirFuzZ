@@ -19,6 +19,7 @@ args = arguments.parse_args()
 
 Q = queue.Queue()
 recursive_queue = queue.Queue()
+file_queue = queue.Queue()
 # nargs='+' indicates one or more arguments 
 # nargs='*' indicates zero or more arguments 
 
@@ -62,15 +63,26 @@ def fuzz():
             break
 
 def file_fuzz():
+    global file_queue
     file_n = None
     if args.fname is None:
-        file_n = args.word_list
+        file_queue = Q
     else:
-        file_n = args.fname
-    for x in file_extenctions:
-        file_bulder = FileUrlBuilder(args.url,args.word_list,x)
-        y =file_bulder.fileUrlPathBuilder(x)
-        print(y)
+        with open(args.fname, 'r') as l:
+            n = l.read()
+            k = n.split("\n")
+            
+            for x in k:
+                file_queue.put(x)
+
+    while not file_queue.empty():
+        name = file_queue.get()
+        for x in file_extenctions:
+            file_bulder = FileUrlBuilder(args.url,x)
+            y =file_bulder.fileUrlPathBuilder(name)
+            r = requests.get(url=y)
+            if r.status_code in status_codes:
+                print(y)
         
 def recursive_fuzz():
     if args.r < 6:
