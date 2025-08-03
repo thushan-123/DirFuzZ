@@ -1,5 +1,6 @@
 # DirFuzZ
-``` Developed by thush
+```
+Developed by thush
 ```
 # 🔍 Python Async Directory & File Fuzzer
 
