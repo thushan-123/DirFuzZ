@@ -32,7 +32,6 @@ python fuzz.py --url http://example.com/ \
   --word-list wordlist.txt \
   --status-codes 200,301,403 \
   -e php,html,txt \
-  -r 2 \
-  -fname files.txt
+  -r 2 
 
 
